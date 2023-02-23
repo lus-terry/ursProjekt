@@ -7,11 +7,17 @@
 #define F_CPU 7372800UL
 
 #include <avr/io.h>
-#include "lcd.h"
 #include <util/delay.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <avr/interrupt.h>
+#include "lcd.h"
+#include "RandomLed.h"
+#define TOP_OF_TIMER 28800
 
 #include "Vjesala.h"
 #include "keyboard.h"
+
 
 
 
@@ -29,26 +35,44 @@ void game( char gameNumber) {
 	if(gameNumber == '1') {
 		startVjesala();
 	} else if(gameNumber == '2') {
-		
+		randomLed();
 	}
 	
 }
 		
 int main(void) {
-   DDRD = _BV(4);
+	
+		//za LCD
+		DDRB = _BV(3);
+		TCCR0 = _BV(WGM01) | _BV(WGM00) | _BV(CS01) | _BV(COM01);
+		OCR0 = 128;
+		//brojac sekunda
+		TIMSK |= _BV(OCIE1A);
+		TCCR1B |= _BV(CS12) | _BV(WGM12);
+		OCR1A = TOP_OF_TIMER;
+		
+		DDRD = 0xf0;
+		DDRA = 0xf0;
+		PORTA |= 0xf0;
+		
+  /*DDRB = _BV(4);
 
    TCCR1A = _BV(COM1B1) | _BV(WGM10);
    TCCR1B = _BV(WGM12) | _BV(CS11);
    OCR1B = 128;
-
+*/
    lcd_init(LCD_DISP_ON);
    lcd_clrscr();
-   lcd_puts("Odaberi igricu!");
+   lcd_puts("Odaberi igricu:");
+   _delay_ms(1000);
 
 
    while(1) {
-	   game(pressedKey());
+	   char pressed = pressedKey();
+	   if(pressed!='/') {
+		 game(pressed);  
+	   }
+	   
 	   _delay_ms(300);
    }
 }
-

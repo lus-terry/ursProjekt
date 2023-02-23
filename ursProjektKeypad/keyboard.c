@@ -7,9 +7,9 @@
 
 #include <avr/io.h>
 
-#define KEY_PRT 	PORTB
-#define KEY_DDR		DDRB
-#define KEY_PIN		PINB
+#define KEY_PRT 	PORTA
+#define KEY_DDR		DDRA
+#define KEY_PIN		PINA
 
 #define keyboard PORTA
 
@@ -29,7 +29,7 @@ unsigned char keypad[4][4] = {{'A','1','2','3'},
 	 KEY_DDR = 0xF0;
 	 KEY_PRT = 0xFF;
 	 
-	 while(1) {
+
 		 
 		 //provjera dal je pritisnuta tipka, u kojem redu?
 		 
@@ -77,6 +77,6 @@ unsigned char keypad[4][4] = {{'A','1','2','3'},
 			 //0111 -> stupac 3
 			 return keypad[3][rowStatus];
 		 }
-	 }
-	 
+
+	 return '/';
  }

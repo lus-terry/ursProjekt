@@ -14,6 +14,7 @@
 #include <stdlib.h>
 
 #include "keyboard.h"
+#include "joystick.h"
 
 #define PRT	PORTD
 #define DDR	DDRD
@@ -21,8 +22,8 @@
 
 
 
-//char words[][14]={"UGRADBENI", "ATMEGA", "PROJEKT", "SENZORI", "RITEH", "PROGRAMER", "RIJEKA", "PROTEUS", "ASEMBLER", "KUTIJA" };
-char words[][14]={"JAKOV", "LUCIJA", "PAULA", "LOVRO"};
+char words[][14]={"UGRADBENI", "ATMEGA", "PROJEKT", "SENZORI", "RITEH", "PROGRAMER", "RIJEKA", "PROTEUS", "ASEMBLER", "KUTIJA" };
+//char words[][14]={"ABC", "DEF"};
 char abc[]={'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','R','S','T','U','V','Z'};
 char leftRight[10]="<   >";
 char word[16];
@@ -102,13 +103,13 @@ void check(char letter) {
 	
 }
 
-void letter( char direction) {
-	if(direction=='1') {
+void letter( int direction) {
+	if(direction==1) {
 		pos-=1;
 		if(pos==-1) {
 			pos=21;
 		}
-	}else if(direction=='3') {
+	}else if(direction==2) {
 		pos+=1;
 		if(pos==22) {
 			pos=0;
@@ -120,7 +121,7 @@ void letter( char direction) {
 	lcd_putc(leftRight[2]);
 	_delay_ms(200);
 	
-	if(direction=='2') {
+	if(direction==3) {
 		//korisnik je odabrao letter
 		flag = 0;
 		check(abc[pos]);
@@ -177,7 +178,8 @@ void startVjesala(void) {
 	while(1) {
 		
 		
-		letter(pressedKey());
+		//letter(pressedKey());
+		letter(check_direction());
 		_delay_ms(400);
 		
 		
@@ -190,4 +192,3 @@ void startVjesala(void) {
 
 
 }
-
