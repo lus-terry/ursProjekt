@@ -7,12 +7,7 @@
 #include "lcd.h"
 #include "RandomLed.h"
 #define TOP_OF_TIMER 28800
-
-int seconds = 0;
-ISR(TIMER1_COMPA_vect) {
-	seconds++;
-}
-
+int tmpSecondsLed = 0;
 
 int randNumber()
 {
@@ -41,28 +36,17 @@ void check_activity(int *punti, int *ledOn, int brLedice)
 	PORTA ^= _BV(7 - *ledOn);
 	return;
 }
-void randomLed(void)
+void randomLed(int *seconds)
 {
-
+	tmpSecondsLed = *seconds;
 	lcd_clrscr();
 	int gameOn = 1;
 	int ledOn = 0;
 	int punti = 0;
 	PORTA ^= _BV(7 - ledOn);
 	sei();
-	while(gameOn){
-		if(seconds == 40)
-		{
-			lcd_clrscr();
-			lcd_gotoxy(0, 0);
-			lcd_puts("Vrijeme isetklo!");
-			lcd_gotoxy(0, 1);
-			lcd_putc('0' + (punti / 10));
-			lcd_putc('0' + (punti % 10));
-			gameOn = 0;
-			_delay_ms(500);
-		}
-		else{
+	while(*seconds > tmpSecondsLed + 40){
+		
 			if((PIND & _BV(7)) && gameOn)
 			{
 				check_activity(&punti, &ledOn, 0);
@@ -89,9 +73,16 @@ void randomLed(void)
 				lcd_putc('0' + (punti / 10));
 				lcd_putc('0' + (punti % 10));
 				lcd_puts("  ");
-				lcd_putc('0' + (seconds / 10));
-				lcd_putc('0' + (seconds % 10));
+				lcd_putc('0' + ((*seconds - tmpSecondsLed) / 10));
+				lcd_putc('0' + ((*seconds - tmpSecondsLed) % 10));
 			}
 		}
-	}
+	lcd_clrscr();
+	lcd_gotoxy(0, 0);
+	lcd_puts("Vrijeme isetklo!");
+	lcd_gotoxy(0, 1);
+	lcd_putc('0' + (punti / 10));
+	lcd_putc('0' + (punti % 10));
+	gameOn = 0;
+	_delay_ms(500);
 }

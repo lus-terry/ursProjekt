@@ -12,14 +12,22 @@
 #include <stdio.h>
 #include <avr/interrupt.h>
 #include "lcd.h"
-#include "RandomLed.h"
 #define TOP_OF_TIMER 28800
 
 #include "Vjesala.h"
+#include "RandomLed.h"
+#include "pacman.h"
 #include "keyboard.h"
 
-
-
+int seconds = 0;
+//int flag = 0;
+/*
+use(secondsPacman);
+use(secondsRandomLed);
+*/
+ISR(TIMER1_COMPA_vect) {
+	seconds++;
+}
 
 
 void game( char gameNumber) {
@@ -33,10 +41,26 @@ void game( char gameNumber) {
 	_delay_ms(2000);
 	
 	if(gameNumber == '1') {
+		//flag = 1;
 		startVjesala();
 	} else if(gameNumber == '2') {
-		randomLed();
+		//flag = 2;
+		
+		randomLed(&seconds);
+	} else if(gameNumber == '3') {
+		//flag = 3;
+		
+		startPacman(&seconds);
+	} else {
+		lcd_puts("Odabrali ste nevazeci broj.");
 	}
+	lcd_clrscr();
+	lcd_init(LCD_DISP_ON);
+	lcd_clrscr();
+	lcd_puts("Odaberi igricu:");
+	_delay_ms(1000);
+	
+	return;
 	
 }
 		
@@ -54,6 +78,7 @@ int main(void) {
 		DDRD = 0xf0;
 		DDRA = 0xf0;
 		PORTA |= 0xf0;
+		sei();
 		
   /*DDRB = _BV(4);
 

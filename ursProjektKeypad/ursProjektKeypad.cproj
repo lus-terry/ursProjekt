@@ -147,6 +147,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="pacman.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="pacman.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="joystick.h">
       <SubType>compile</SubType>
     </Compile>

@@ -12,6 +12,7 @@
 #include <util/delay.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "keyboard.h"
 #include "joystick.h"
@@ -23,7 +24,7 @@
 
 
 char words[][14]={"UGRADBENI", "ATMEGA", "PROJEKT", "SENZORI", "RITEH", "PROGRAMER", "RIJEKA", "PROTEUS", "ASEMBLER", "KUTIJA" };
-//char words[][14]={"ABC", "DEF"};
+//char words[][14]={"ABC", "D", "AAAAAA"};
 char abc[]={'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','R','S','T','U','V','Z'};
 char leftRight[10]="<   >";
 char word[16];
@@ -157,7 +158,7 @@ void startVjesala(void) {
 
 	
 	int randomNumber = 0;
-	//randomNumber=rand() % 10; //dobivamo brojeve od 0 do 9 = indexi unutar words
+	randomNumber = TCNT0 % 10;
 	
 	
 	//crtice
@@ -179,7 +180,7 @@ void startVjesala(void) {
 		
 		
 		//letter(pressedKey());
-		letter(check_direction());
+		//letter(check_direction());
 		_delay_ms(400);
 		
 		

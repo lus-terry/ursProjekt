@@ -8,7 +8,8 @@
 
 #ifndef INCFILE1_H_
 #define INCFILE1_H_
-void randomLed(void);
+
+void randomLed(int *);
 int randNumber();
 void check_activity(int *punti, int *ledOn, int brLedice);
 

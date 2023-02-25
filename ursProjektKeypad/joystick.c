@@ -12,7 +12,7 @@
 #include <avr/interrupt.h>
 #include "lcd.h"
 #include "RandomLed.h"
-#define TOP_OF_TIMER 28800
+//#define TOP_OF_TIMER 28800
 
 int check_direction(void) {
 	DDRD = 0xf0;
