@@ -15,7 +15,6 @@
 
 #include "lcd.h"
 #include "keyboard.h"
-#include "joystick.h"
 #include "scrollingText.h"
 
 #define PRT	PORTD
