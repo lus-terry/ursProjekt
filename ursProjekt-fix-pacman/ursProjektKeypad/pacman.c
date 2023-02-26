@@ -24,14 +24,13 @@ int prevPacmanx = 0;
 int prevPacmany = 0;
 int score = 0;
 int tmpSeconds = 0;
-int z = 0;
-int k = 0;
+
 
 
 void pokaziBodove() {
 	lcd_clrscr();
 	lcd_gotoxy(0, 0);
-	lcd_puts("Vasi bodovi: ");
+	lcd_puts(" Vasi bodovi: ");
 	
 		lcd_putc('0' + (score / 10));
 		lcd_putc('0' + (score % 10));
@@ -39,11 +38,11 @@ void pokaziBodove() {
 
 void gameOverPacman() {
 	lcd_clrscr();
-	lcd_puts("Vrijeme je isteklo");
+	lcd_puts("Vrijeme isteklo!");
 	
-	_delay_ms(1000);
+	_delay_ms(2000);
 	pokaziBodove();
-	_delay_ms(3000);
+	_delay_ms(4000);
 	return;
 }
 
@@ -64,28 +63,21 @@ void newDot(int brojTocke) {
 		goto start;
 	}
 	
- 	if (brojTocke >= 16){
- 		red2[redDots[brojTocke] - 16] = path;
- 		} else if (brojTocke < 16){
- 		red1[redDots[brojTocke]] = path;
+/*
+//  	if (brojTocke >= 16){
+//  		red2[redDots[brojTocke] - 16] = path;
+//  		} else if (brojTocke < 16){
+//  		red1[redDots[brojTocke]] = path;
+//  	}
+*/
+
+
+ 	if (randomNumber >= 16){
+ 		red2[redDots[brojTocke] - 16] = dot;
+ 	} else if (randomNumber < 16){
+		red1[redDots[brojTocke]] = dot;
  	}
 
- 	
-
-
-
-// /*
-//  	if (!redak){
-//  		red1dots[brojTocke] = redDots[brojTocke];
-//  	} else if (redak) {
-//  		red2dots[brojTocke] = redDots[brojTocke];
-//  	}*/
-
-	if (randomNumber >= 16){
-		red2[redDots[brojTocke] - 16] = dot;
-	} else if (randomNumber < 16){
-		red1[redDots[brojTocke]] = dot;
-	}
 	
 }
 
@@ -93,8 +85,6 @@ void newDot(int brojTocke) {
 void bodovi(int pacy) {
 	for (int i = 0; i < 10; i++) {
 		if (redDots[i] == pacy){
-			//red1[dots1[i]] = pacman;
-			//redDots[i] = 50;
 			score++;								
 			newDot(i);
 		}
@@ -110,9 +100,7 @@ void mainScreenPacman() {
 	lcd_puts(red2);	
 	
 	_delay_ms(100);
-	
-	//bodovi(red1dots, posPacmany, end1, score);
-	//bodovi(red2dots, posPacmany, end2, score);
+
 }
 
 void smjer(char direction) {
@@ -180,11 +168,8 @@ void smjer(char direction) {
 		red2[posPacmany] = pacman;
 		red1[posPacmany] = path;
 	}
-	/*
-	lcd_gotoxy(posPacmanx, posPacmany);
-	lcd_putc(pacman);
-	_delay_ms(200);
-	*/
+	//_delay_ms(200);
+	
 	if (!posPacmanx) {
 		bodovi(posPacmany);
 	} else {
@@ -204,17 +189,26 @@ void startPacman(int *seconds)
 	posPacmany = 0;
 	
 	lcd_clrscr();
-	lcd_gotoxy(4,0);
-	lcd_puts("Pac-man!");
+	lcd_gotoxy(3,0);
+	lcd_puts("CUDOVISTE");
 	_delay_ms(2000);
 	
-	
+	//upute
+	lcd_clrscr();
+	lcd_gotoxy(4,0);
+	lcd_puts("UPUTE:");
+	_delay_ms(2000);
 	lcd_clrscr();
 	lcd_gotoxy(0,0);
-	lcd_puts("Skupi bodove");
+	lcd_puts("Nahrani cudoviste");
 	lcd_gotoxy(0,1);
-	lcd_puts("u 10 sekundi");
+	lcd_puts("u 10 sekundi!");
 	_delay_ms(2000);
+	lcd_gotoxy(0,0);
+	lcd_puts("Pomici joystick ");
+	lcd_gotoxy(0,1);
+	lcd_puts("u smjeru hrane.");
+	_delay_ms(3000);
 	
 	
 			
@@ -231,12 +225,7 @@ void startPacman(int *seconds)
 		red2[j] = path;
 	}
 	red2[j] = '\0';
-		
-		
-	/*lcd_clrscr();
-	lcd_gotoxy(0,0);
-	lcd_putc(pacman);
-	_delay_ms(250);*/
+
 		
 	int randomNumber;
 		
@@ -264,26 +253,7 @@ void startPacman(int *seconds)
 			red2[randomNumber - 16] = dot;
 		}
 
-		
-		/*if (!randomNumberx){
-			
-			red1[randomNumbery] = dot;
-			red1dots[z] = randomNumbery;
-			z++;
-			
-		} else if (randomNumberx) {
-			
-			red2[randomNumbery] = dot;
-			red2dots[k] = randomNumbery;
-			k++;
-			
-		}*/
 	}
-	
-	//red1dots[z] = '\0';
-	//red2dots[k] = '\0';
-
-		
 		
 	mainScreenPacman();
 
@@ -294,7 +264,7 @@ void startPacman(int *seconds)
 		
 
 		smjer(pressedKey());
-		_delay_ms(50);
+		_delay_ms(2);
 		
 
     }
@@ -307,4 +277,3 @@ void startPacman(int *seconds)
 	}
 	return;
 }
-
