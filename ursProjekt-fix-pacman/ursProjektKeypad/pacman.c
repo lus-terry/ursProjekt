@@ -13,8 +13,7 @@
 
 char red1[16];
 char red2[16];
-int red1dots[10];
-int red2dots[10];
+int redDots[32];
 int end1, end2;
 char pacman = 0b11111100;
 char dot = 0b10100101;
@@ -25,6 +24,8 @@ int prevPacmanx = 0;
 int prevPacmany = 0;
 int score = 0;
 int tmpSeconds = 0;
+int z = 0;
+int k = 0;
 
 
 void pokaziBodove() {
@@ -46,13 +47,57 @@ void gameOverPacman() {
 	return;
 }
 
-void bodovi(int dots1[10], int pacy, int n) {
-	for (int i = 0; i < n; i++) {
-		if (dots1[i] == pacy){
+
+void newDot(int brojTocke) {
+	
+	start:
+	redDots[brojTocke] = rand() % 31 + 1;
+	int randomNumber = redDots[brojTocke];
+	
+	if (randomNumber < 16 && red1[randomNumber] == path){
+		red1[randomNumber] = dot;
+		
+		} else if (randomNumber >= 16 && red2[randomNumber - 16] == path) {
+		red2[randomNumber - 16] = dot;
+		
+		} else {
+		goto start;
+	}
+	
+ 	if (brojTocke >= 16){
+ 		red2[redDots[brojTocke] - 16] = path;
+ 		} else if (brojTocke < 16){
+ 		red1[redDots[brojTocke]] = path;
+ 	}
+
+ 	
+
+
+
+// /*
+//  	if (!redak){
+//  		red1dots[brojTocke] = redDots[brojTocke];
+//  	} else if (redak) {
+//  		red2dots[brojTocke] = redDots[brojTocke];
+//  	}*/
+
+	if (randomNumber >= 16){
+		red2[redDots[brojTocke] - 16] = dot;
+	} else if (randomNumber < 16){
+		red1[redDots[brojTocke]] = dot;
+	}
+	
+}
+
+
+void bodovi(int pacy) {
+	for (int i = 0; i < 10; i++) {
+		if (redDots[i] == pacy){
 			//red1[dots1[i]] = pacman;
-			dots1[i] = 50;
-			score++;
-		}	
+			//redDots[i] = 50;
+			score++;								
+			newDot(i);
+		}
 	}
 }
 
@@ -78,6 +123,8 @@ void smjer(char direction) {
 	
 	if (PIND & _BV(5)){
 		direction = '4';
+		_delay_ms(3);
+		while((PIND & _BV(5)));
 		posPacmany--;
 		if (posPacmany == -1)
 		{
@@ -87,6 +134,8 @@ void smjer(char direction) {
 	else if (PIND & _BV(7)){
 		direction = '6';
 		posPacmany++;
+		_delay_ms(3);
+		while((PIND & _BV(7)));
 		if (posPacmany == 16)
 		{
 			posPacmany = 0;
@@ -95,6 +144,8 @@ void smjer(char direction) {
 	else if (PIND & _BV(6)){
 		direction = '2';
 		posPacmanx++;
+		_delay_ms(3);
+		while((PIND & _BV(6)));
 		if (posPacmanx == 2)
 		{
 			posPacmanx = 0;
@@ -103,6 +154,8 @@ void smjer(char direction) {
 	else if (PIND & _BV(4)){
 		direction = '8';
 		posPacmanx--;
+		_delay_ms(3);
+		while((PIND & _BV(4)));
 		if (posPacmanx == -1)
 		{
 			posPacmanx = 2;
@@ -133,10 +186,10 @@ void smjer(char direction) {
 	_delay_ms(200);
 	*/
 	if (!posPacmanx) {
-		bodovi(red1dots, posPacmany, end1);
+		bodovi(posPacmany);
 	} else {
-		bodovi(red2dots, posPacmany, end2);		
-		}	
+		bodovi(posPacmany + 16);		
+	}	
 		
 		mainScreenPacman();
 
@@ -185,22 +238,34 @@ void startPacman(int *seconds)
 	lcd_putc(pacman);
 	_delay_ms(250);*/
 		
-	int randomNumberx;
-	int randomNumbery;
-	
-	int z = 0;
-	int k = 0;
-
+	int randomNumber;
 		
 		
 	for (int i = 0; i < 10; i++){
 		
 		
-		randomNumberx = rand() % 2;
-		randomNumbery = rand() % 15 + 1;			//+1
+		randomNumber = rand() % 31 + 1;
+		if (randomNumber < 16 && red1[randomNumber] == path){
+			red1[randomNumber] = dot;
+			
+		} else if (randomNumber >= 16 && red2[randomNumber - 16] == path) {
+		red2[randomNumber - 16] = dot;
+			
+		} else {
+			i--;
+			continue;
+		}
+		
+		redDots[i] = randomNumber;
+		
+		if (randomNumber < 16){
+			red1[randomNumber] = dot;
+		} else if (randomNumber >= 16) {
+			red2[randomNumber - 16] = dot;
+		}
 
 		
-		if (!randomNumberx){
+		/*if (!randomNumberx){
 			
 			red1[randomNumbery] = dot;
 			red1dots[z] = randomNumbery;
@@ -212,19 +277,17 @@ void startPacman(int *seconds)
 			red2dots[k] = randomNumbery;
 			k++;
 			
-		}
+		}*/
 	}
 	
 	//red1dots[z] = '\0';
 	//red2dots[k] = '\0';
-	
-	end1 = z;
-	end2 = k;
+
 		
 		
 	mainScreenPacman();
 
-		tmpSeconds = *seconds;
+	tmpSeconds = *seconds;
 	score = 0;
     while (*seconds < tmpSeconds + 15) 
     {
@@ -244,3 +307,4 @@ void startPacman(int *seconds)
 	}
 	return;
 }
+
