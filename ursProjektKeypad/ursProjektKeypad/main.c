@@ -47,12 +47,14 @@ void game( char gameNumber) {
 		lcd_putc(gameNumber);
 		
 		_delay_ms(2000);
+		seconds = 0;
 		randomLed(&seconds);
 	} else if(gameNumber == '3') {
 		lcd_puts("igricu broj ");
 		lcd_putc(gameNumber);
 		
 		_delay_ms(2000);
+		seconds = 0;
 		startPacman(&seconds);
 	} else {
 		lcd_puts("nevazeci broj!");
