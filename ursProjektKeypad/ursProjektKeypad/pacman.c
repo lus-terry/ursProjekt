@@ -29,11 +29,10 @@ int tmpSeconds = 0;
 
 void pokaziBodove() {
 	lcd_clrscr();
-	lcd_gotoxy(1, 0);
+	lcd_gotoxy(0, 0);
 	lcd_puts("Vasi bodovi: ");
-	
-		lcd_putc('0' + (score / 10));
-		lcd_putc('0' + (score % 10));
+	lcd_putc('0' + (score / 10));
+	lcd_putc('0' + (score % 10));
 }
 
 void gameOverPacman() {
