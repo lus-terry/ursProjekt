@@ -203,7 +203,7 @@ void startVjesala(void) {
 	while(flag) {
 		letter();
 		
-		_delay_ms(50);
+		_delay_ms(20);
 		
 	}
 	
