@@ -177,7 +177,7 @@ void startVjesala(void) {
 	lcd_gotoxy(0,0);
 	lcd_puts("za potvrdu slova:");
 	lcd_gotoxy(0,1);
-	lcd_puts("  gore/dole");
+	lcd_puts("  gore/dolje");
 	_delay_ms(3000);
 	lcd_clrscr();
 
