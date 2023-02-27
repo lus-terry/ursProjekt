@@ -6,7 +6,6 @@
 #include <avr/interrupt.h>
 #include "lcd.h"
 #include "RandomLed.h"
-#define TOP_OF_TIMER 28800
 int tmpSecondsLed = 0;
 
 int randNumber()
@@ -62,9 +61,9 @@ void randomLed(int *seconds)
 	_delay_ms(2000);
 	lcd_clrscr();
 	lcd_gotoxy(0,0);
-	lcd_puts("Pomici joystick prema");
+	lcd_puts("Pomakni joystick");
 	lcd_gotoxy(0,1);
-	lcd_puts("upaljenoj ledici.");
+	lcd_puts("u smjeru LEDica.");
 	_delay_ms(3000);
 	DDRC = 0xff;
 	PORTC = 0xff;
@@ -120,9 +119,8 @@ void randomLed(int *seconds)
 	lcd_puts("Vrijeme isteklo!");
 	_delay_ms(2000);
 	lcd_clrscr();
-	lcd_gotoxy(1, 0);
-	lcd_puts("Bodovi:");
-	lcd_gotoxy(0, 1);
+	lcd_gotoxy(0, 0);
+	lcd_puts("Vasi bodovi: ");
 	lcd_putc('0' + (punti / 10));
 	lcd_putc('0' + (punti % 10));
 	_delay_ms(4000);
